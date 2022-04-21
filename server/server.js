@@ -6,7 +6,7 @@ const port = process.env.PORT || 9000;
 
 // respond with "hello world" when a GET request is made to the homepage
 app.get("/", (req, res) => {
-  res.send("hello world");
+  res.send("hello world trigger");
 });
 
 // Listening to port

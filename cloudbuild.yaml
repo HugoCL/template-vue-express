@@ -2,47 +2,28 @@ steps:
   - name: node:16
     entrypoint: npm
     args: ["install"]
-    dir: "server"
-    id: "install-server"
+    dir: "frontend"
+    id: "install-frontend"
     waitFor: ["-"]
   - name: node:16
     entrypoint: npm
-    args: ["run", "create-env"]
-    env:
-      - "VUE_APP_SERVER_URL=${_VUE_APP_SERVER_URL}"
-      - "MONGODB_URL=${_MONGODB_URL}"
+    args: ["run", "build"]
+    dir: "frontend"
+    id: "build-frontend"
+    waitFor: ["install-frontend"]
+  - name: "gcr.io/cloud-builders/gcloud"
+    args: ["app", "deploy"]
+    dir: "frontend"
+    id: "deploy-frontend"
+    waitFor: ["install-frontend", "build-frontend"]
+  - name: node:16
+    entrypoint: npm
+    args: ["install"]
     dir: "server"
-    id: "envvars-server"
-    waitFor: ["install-server"]
+    id: "install-server"
+    waitFor: ["-"]
   - name: "gcr.io/cloud-builders/gcloud"
     args: ["app", "deploy"]
     dir: "server"
     id: "deploy-server"
-    waitFor: ["envvars-server", "install-server"]
-  - name: node:16
-    entrypoint: npm
-    args: ["install"]
-    dir: "client"
-    id: "install-client"
-    waitFor: ["-"]
-  - name: node:16
-    entrypoint: npm
-    args: ["run", "create-env"]
-    env:
-      - "VUE_APP_SERVER_URL=${_VUE_APP_SERVER_URL}"
-      - "MONGODB_URL=${_MONGODB_URL}"
-    dir: "client"
-    id: "envvars-client"
-    waitFor: ["install-client"]
-  - name: node:16
-    entrypoint: npm
-    args: ["run", "generate"]
-    dir: "client"
-    id: "generate-client"
-    waitFor: ["envvars-client", "install-client", "deploy-server"]
-  - name: "gcr.io/cloud-builders/gcloud"
-    args: ["app", "deploy"]
-    dir: "client"
-    id: "deploy-client"
-    waitFor:
-      ["envvars-client", "install-client", "generate-client", "deploy-server"]
+    waitFor: ["install-server", "deploy-frontend"]
