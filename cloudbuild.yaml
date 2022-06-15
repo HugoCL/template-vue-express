@@ -5,6 +5,16 @@ steps:
     dir: "frontend"
     id: "install-frontend"
     waitFor: ["-"]
+  # If you have to add env variables to the frontend
+  # You then need to add the env to the cloud build trigger, in the substitution variables
+  # - name: node:16
+  #   entrypoint: npm
+  #   args: ["run", "create-env"]
+  #   env:
+  #     - "NUXT_ENV_API_KEY=${_NUXT_ENV_API_KEY}"
+  #   dir: "frontend"
+  #   id: "envs-frontend"
+  #   waitFor: ["install-frontend"]
   - name: node:16
     entrypoint: npm
     args: ["run", "build"]

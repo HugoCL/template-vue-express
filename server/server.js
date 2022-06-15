@@ -1,16 +1,27 @@
-const express = require("express");
+// Packages Imports
+const express = require('express');
 const app = express();
+const cors = require('cors');
+
+// Router Imports
+const testRouter = require('./routes/testRouter');
+
+// App Settings and Middlewares
+app.use(cors({ origin: '*' }));
+app.use(express.json());
 
 // Configuring port
 const port = process.env.PORT || 9000;
 
-// respond with "hello world" when a GET request is made to the homepage
-app.get("/", (req, res) => {
-  res.send("hello world trigger");
+// Routes definition
+app.get('/test', testRouter);
+
+app.get('/', (req, res) => {
+    res.send('Hello World!');
 });
 
-// Listening to port
+// App Serving
 app.listen(port);
-console.log(`Listening On http://localhost:${port}/api`);
+console.log(`Listening On http://localhost:${port}/`);
 
 module.exports = app;
