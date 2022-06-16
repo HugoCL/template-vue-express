@@ -14,11 +14,11 @@ app.use(express.json());
 const port = process.env.PORT || 9000;
 
 // Routes definition
-app.get('/test', testRouter);
-
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
+
+app.use('/test', testRouter);
 
 // App Serving
 app.listen(port);

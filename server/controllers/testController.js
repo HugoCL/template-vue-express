@@ -5,7 +5,7 @@ const testController = {
     // Here you add all the controllers of the service
     async getTests(req, res) {
         await testService
-            .getTest()
+            .getTests()
             .then((result) => {
                 res.status(result.code).json(result);
             })

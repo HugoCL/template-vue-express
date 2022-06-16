@@ -5,8 +5,8 @@ const testController = require('../controllers/testController');
 const testRouter = express.Router();
 
 // Add the routes to the router
-testRouter.get('/', testController.getTests);
+testRouter.get('/get-all', testController.getTests);
 
-testRouter.get('/:id', testController.getTestById);
+testRouter.get('/get/:id', testController.getTestById);
 
 module.exports = testRouter;
